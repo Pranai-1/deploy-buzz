@@ -1,4 +1,5 @@
 import { signIn } from "next-auth/react";
+import Link from "next/link";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import { toast } from "react-toastify";
@@ -116,9 +117,11 @@ export default function LoginForm(){
         <span>
           {" "}
           New User*?
-          <a href="/signup" className="text-blue-500 underline">
-            Register here
-          </a>
+          <Link href="/signup">
+  <span className="text-blue-500 underline cursor-pointer">
+    Register here
+  </span>
+</Link>
         </span>
       </div>
     </div>

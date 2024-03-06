@@ -1,4 +1,5 @@
 import axios from "axios";
+import Link from "next/link";
 import { useRouter } from "next/router";
 import { useCallback, useState } from "react";
 //import ReCAPTCHA from "react-google-recaptcha";
@@ -17,8 +18,8 @@ export default function SignupForm() {
   const [numberKeyErrorMessage, setNumberKeyErrorMessage] =useState<string>("");
   const [emailErrorMessage, setEmailErrorMessage] = useState<string>("");
   const [passwordErrorMessage, setPasswordErrorMessage] = useState<string>("");
-  const[captcha,setCaptcha]=useState<string|null>();
-  const RECAPTCHA_SITE_KEY = process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY;
+
+
 
   const handleChange = useCallback((value: any, type: string) => {
     switch (type) {
@@ -87,7 +88,7 @@ export default function SignupForm() {
         }
       }
    
-  },[name,email,password,captcha,numberKey])
+  },[name,email,password,numberKey])
 
   return (
     <div className=" h-[707px] w-full bg-black absolute flex justify-center items-center">
@@ -165,9 +166,11 @@ export default function SignupForm() {
         <span>
           {" "}
           Already Registered*?
-          <a href="/login" className="text-blue-500 underline">
-            Login Now
-          </a>
+          <Link href="/signup">
+  <span className="text-blue-500 underline cursor-pointer">
+    Register here
+  </span>
+</Link>
         </span>
       </div>
     </div>
