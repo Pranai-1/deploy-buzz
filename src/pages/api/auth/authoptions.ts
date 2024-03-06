@@ -3,7 +3,18 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import bcrypt from "bcrypt";
 import { PrismaClient } from "@prisma/client";
 import { GetServerSidePropsContext } from "next";
-import { ContactType, ContactUserType, User } from "../types";
+export type User = {
+  id: number;
+  name: string;
+  email: string;
+  password: string;
+  contacts: ContactUserType[];
+  numberKey: number;
+};
+export type ContactUserType = {
+  contactId: number;
+  userId: number;
+};
 
 const prisma = new PrismaClient();
 
