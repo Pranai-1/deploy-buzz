@@ -1,0 +1,80 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        Int      @id @default(autoincrement())
+  name      String
+  email     String   @unique
+  password  String
+  numberKey Int      @unique
+  contacts  ContactUser[]  //A relationship field that associates a user with their contacts. 
+  //It's defined as an array of ContactUser records, meaning a user can have multiple contacts.
+  rooms     RoomUser[]    // A relationship field that associates users with the rooms they are subscribed to.
+}
+
+model Contact {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  name      String
+  numberKey Int
+  users     ContactUser[]  // A relationship field that associates contacts with the users who have them as contacts. 
+  //It's defined as an array of ContactUser records, meaning a contact can be associated with multiple users.
+
+}
+
+model ContactUser {
+  contact   Contact @relation(fields: [contactId], references: [id])
+  user      User    @relation(fields: [userId], references: [id])
+
+  contactId Int
+  userId    Int
+
+  @@id([contactId, userId])
+
+  // /The @@id([contactId, userId]) directive defines a composite primary key based on the contactId and userId fields. 
+  //This enforces uniqueness in the combination of these two fields, ensuring that a user cannot have the same contact multiple times.
+}
+
+model Messages{
+  id      Int  @id @default(autoincrement())
+  senderId   Int
+  receiverId  Int
+  text        String
+}
+
+model AnonymousUser{
+  id Int @id @default(autoincrement())
+  name String
+  gender String
+}
+
+
+
+
+model Room {
+  id    Int      @id @default(autoincrement())
+  key   Int      @unique
+  users RoomUser[]    // A relationship field that associates rooms with the users who are subscribed to them.
+}
+
+model RoomUser {
+  id     Int   @id @default(autoincrement())
+  userId Int
+  roomId Int
+  user   User  @relation(fields: [userId], references: [id])
+  room   Room  @relation(fields: [roomId], references: [id])
+
+  @@unique([userId, roomId])
+}
